@@ -1,9 +1,9 @@
 #pragma once
 
 #include "esphome/core/component.h"
+#include "esphome/core/component_iterator.h"
 #include "esphome/core/controller.h"
 #include "esphome/core/defines.h"
-#include "util.h"
 
 namespace esphome {
 namespace api {
@@ -12,7 +12,7 @@ class APIConnection;
 
 class InitialStateIterator : public ComponentIterator {
  public:
-  InitialStateIterator(APIServer *server, APIConnection *client);
+  InitialStateIterator(APIConnection *client);
 #ifdef USE_BINARY_SENSOR
   bool on_binary_sensor(binary_sensor::BinarySensor *binary_sensor) override;
 #endif
@@ -43,11 +43,20 @@ class InitialStateIterator : public ComponentIterator {
 #ifdef USE_NUMBER
   bool on_number(number::Number *number) override;
 #endif
+#ifdef USE_TEXT
+  bool on_text(text::Text *text) override;
+#endif
 #ifdef USE_SELECT
   bool on_select(select::Select *select) override;
 #endif
 #ifdef USE_LOCK
   bool on_lock(lock::Lock *a_lock) override;
+#endif
+#ifdef USE_MEDIA_PLAYER
+  bool on_media_player(media_player::MediaPlayer *media_player) override;
+#endif
+#ifdef USE_ALARM_CONTROL_PANEL
+  bool on_alarm_control_panel(alarm_control_panel::AlarmControlPanel *a_alarm_control_panel) override;
 #endif
  protected:
   APIConnection *client_;
@@ -55,5 +64,3 @@ class InitialStateIterator : public ComponentIterator {
 
 }  // namespace api
 }  // namespace esphome
-
-#include "api_server.h"
